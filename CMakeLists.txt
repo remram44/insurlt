@@ -11,7 +11,7 @@ FIND_PACKAGE(FCGIPP REQUIRED)
 SET(EXTRA_LIBRARIES ${FCGIPP_LIBRARIES} ${EXTRA_LIBRARIES})
 
 # Build source list with enabled components
-SET(INSURLT_FILES insurlt.cpp permgen.cpp)
+SET(INSURLT_FILES insurlt.cpp permgen.cpp insults.cpp)
 
 # Build executable
 ADD_EXECUTABLE(insurlt ${INSURLT_FILES})
@@ -24,7 +24,8 @@ IF(BUILD_TESTS)
     FIND_PACKAGE(CppUnit REQUIRED)
     INCLUDE_DIRECTORIES(${CPPUNIT_INCLUDE_DIRS})
 
-    SET(TESTS_FILES test.cpp test_permgen.cpp permgen.cpp)
+    SET(TESTS_FILES test.cpp test_permgen.cpp test_insults.cpp
+        permgen.cpp insults.cpp)
 
     ADD_EXECUTABLE(tests ${TESTS_FILES})
     TARGET_LINK_LIBRARIES(tests ${EXTRA_LIBRARIES} ${CPPUNIT_LIBRARIES})

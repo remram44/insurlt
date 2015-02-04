@@ -27,8 +27,6 @@ public:
      */
     Generator(Key state, Key max);
     Key generate();
-
-    void setState(Key state);
     Key state() const;
 
 };

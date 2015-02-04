@@ -18,11 +18,6 @@ Key Generator::generate()
     return m_State;
 }
 
-void Generator::setState(Key state)
-{
-    m_State = state;
-}
-
 Key Generator::state() const
 {
     return m_State;
