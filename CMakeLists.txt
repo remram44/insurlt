@@ -11,7 +11,7 @@ FIND_PACKAGE(FCGIPP REQUIRED)
 SET(EXTRA_LIBRARIES ${FCGIPP_LIBRARIES} ${EXTRA_LIBRARIES})
 
 # Build source list with enabled components
-SET(INSURLT_FILES insurlt.cpp)
+SET(INSURLT_FILES insurlt.cpp permgen.cpp)
 
 # Build executable
 ADD_EXECUTABLE(insurlt ${INSURLT_FILES})
