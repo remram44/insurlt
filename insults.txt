@@ -1,4 +1,4 @@
-vas y clique <N> ou <V> <O> <L> <I> allez.clique-salope.com
+vas-y clique <N> ou <V> <O> <L> <I> allez.clique-salope.com
 
 N:
     salope
@@ -10,10 +10,11 @@ N:
     grosse merde
     vieux chacal
     sale encule
+    gros batard
 V:
     va trouer le cul de
     va gifler
-    va defoncer l anus de
+    va defoncer l-anus de
     va tuer
     va crever
     va cracher sur
@@ -24,6 +25,8 @@ O:
     ton chien
     ta femme
     ta chienne
+    ta soeur
+    ton frere
 L:
     au cimetiere
     chez le coiffeur
@@ -42,3 +45,7 @@ I:
     pauvre merde
     fils de chien
     grosse pute
+    sale enflure
+    petite catin
+
+Each space can be either . or -, total: 3609722880 possibilities
