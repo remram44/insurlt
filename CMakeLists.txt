@@ -8,13 +8,14 @@ ENDIF()
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake ${CMAKE_MODULE_PATH})
 
 FIND_PACKAGE(FCGIPP REQUIRED)
+INCLUDE_DIRECTORIES(${FCGIPP_INCLUDE_DIRS})
 SET(EXTRA_LIBRARIES ${FCGIPP_LIBRARIES} ${EXTRA_LIBRARIES})
 
-# Build source list with enabled components
-SET(INSURLT_FILES insurlt.cpp permgen.cpp insults.cpp)
+# Build source list
+SET(INSURLT_FILES permgen.cpp insults.cpp)
 
 # Build executable
-ADD_EXECUTABLE(insurlt ${INSURLT_FILES})
+ADD_EXECUTABLE(insurlt insurlt.cpp ${INSURLT_FILES})
 TARGET_LINK_LIBRARIES(insurlt ${EXTRA_LIBRARIES})
 SET_TARGET_PROPERTIES(insurlt PROPERTIES OUTPUT_NAME "insurlt.fcgi")
 
@@ -25,7 +26,7 @@ IF(BUILD_TESTS)
     INCLUDE_DIRECTORIES(${CPPUNIT_INCLUDE_DIRS})
 
     SET(TESTS_FILES test.cpp test_permgen.cpp test_insults.cpp
-        permgen.cpp insults.cpp)
+        ${INSURLT_FILES})
 
     ADD_EXECUTABLE(tests ${TESTS_FILES})
     TARGET_LINK_LIBRARIES(tests ${EXTRA_LIBRARIES} ${CPPUNIT_LIBRARIES})
