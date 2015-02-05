@@ -15,7 +15,6 @@ public:
             for(size_t i = 0; i < 10; ++i)
             {
                 Key g = gen.generate();
-                std::cerr << g << std::endl;
                 CPPUNIT_ASSERT(g <= 3456789012);
                 keys.push_back(g);
             }
