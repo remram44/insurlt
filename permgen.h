@@ -6,6 +6,7 @@
 
 typedef std::uint_fast32_t Key;
 
+
 /**
  * Generates a random permutation on 32-bit integers.
  *

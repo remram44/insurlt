@@ -1,5 +1,4 @@
 #include <cppunit/extensions/HelperMacros.h>
-#include <iostream>
 
 #include "insults.h"
 
