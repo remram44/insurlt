@@ -1,8 +1,9 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 PROJECT(insurlt)
 
-IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    SET(CMAKE_CXX_FLAGS "-Wall -std=c++11")
+IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR
+        "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    SET(CMAKE_CXX_FLAGS "-Wall -std=c++0x")
 ENDIF()
 
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake ${CMAKE_MODULE_PATH})
@@ -16,7 +17,7 @@ INCLUDE_DIRECTORIES(${SQLITE3_INCLUDE_DIRS})
 SET(EXTRA_LIBRARIES ${SQLITE3_LIBRARIES} ${EXTRA_LIBRARIES})
 
 # Build source list
-SET(INSURLT_FILES permgen.cpp insults.cpp)
+SET(INSURLT_FILES permgen.cpp insults.cpp database.cpp)
 
 # Build executable
 ADD_EXECUTABLE(insurlt insurlt.cpp ${INSURLT_FILES})
@@ -29,7 +30,8 @@ IF(BUILD_TESTS)
     FIND_PACKAGE(CppUnit REQUIRED)
     INCLUDE_DIRECTORIES(${CPPUNIT_INCLUDE_DIRS})
 
-    SET(TESTS_FILES test.cpp test_permgen.cpp test_insults.cpp
+    SET(TESTS_FILES test.cpp
+        test_permgen.cpp test_insults.cpp test_database.cpp
         ${INSURLT_FILES})
 
     ADD_EXECUTABLE(tests ${TESTS_FILES})
