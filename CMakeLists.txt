@@ -16,13 +16,22 @@ FIND_PACKAGE(Sqlite3 REQUIRED)
 INCLUDE_DIRECTORIES(${SQLITE3_INCLUDE_DIRS})
 SET(EXTRA_LIBRARIES ${SQLITE3_LIBRARIES} ${EXTRA_LIBRARIES})
 
+# Makes public/ directory
+ADD_CUSTOM_TARGET(
+    public
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/public")
+
 # Build source list
 SET(INSURLT_FILES permgen.cpp insults.cpp database.cpp)
 
 # Build executable
 ADD_EXECUTABLE(insurlt insurlt.cpp ${INSURLT_FILES})
 TARGET_LINK_LIBRARIES(insurlt ${EXTRA_LIBRARIES})
-SET_TARGET_PROPERTIES(insurlt PROPERTIES OUTPUT_NAME "insurlt.fcgi")
+SET_TARGET_PROPERTIES(
+    insurlt PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/public"
+    OUTPUT_NAME "insurlt.fcgi")
+ADD_DEPENDENCIES(insurlt public)
 
 # Test binary
 OPTION(BUILD_TESTS "Build the tests program" OFF)
