@@ -1,7 +1,7 @@
 #include "permgen.h"
 
 
-//constexpr Key M = 1 << 32;
+constexpr Key M = 0xFFFFFFFF;
 constexpr Key A = 1103515245;
 constexpr Key C = 12345;
 
@@ -13,7 +13,7 @@ Generator::Generator(Key max)
 Key Generator::generate(Key state)
 {
     do
-        state = (A * state + C) & 0xFFFFFFFF;
+        state = (A * state + C) & M;
     while(state > m_Max);
     return state;
 }
