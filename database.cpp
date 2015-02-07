@@ -12,6 +12,10 @@ DatabaseError::DatabaseError(const std::string &msg)
 {
 }
 
+DatabaseError::~DatabaseError() throw()
+{
+}
+
 const char *DatabaseError::what() const throw()
 {
     return m_Message.c_str();

@@ -12,6 +12,7 @@ private:
 
 public:
     DatabaseError(const std::string &msg);
+    ~DatabaseError() throw();
     const char *what() const throw();
 
 };
