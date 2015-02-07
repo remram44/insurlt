@@ -10,18 +10,23 @@ public:
     {
         std::vector<Key> keys;
         {
-            Generator gen(0, 3456789012);
+            Generator gen(3456789012);
+            Key state = 0;
             for(size_t i = 0; i < 10; ++i)
             {
-                Key g = gen.generate();
-                CPPUNIT_ASSERT(g <= 3456789012);
-                keys.push_back(g);
+                state = gen.generate(state);
+                CPPUNIT_ASSERT(state <= 3456789012);
+                keys.push_back(state);
             }
         }
         {
-            Generator gen2(keys[4], 3456789012);
+            Generator gen2(3456789012);
+            Key state = keys[4];
             for(size_t i = 0; i < 5; ++i)
-                CPPUNIT_ASSERT(gen2.generate() == keys[5+i]);
+            {
+                state = gen2.generate(state);
+                CPPUNIT_ASSERT(state == keys[5+i]);
+            }
         }
     }
 

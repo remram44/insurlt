@@ -16,19 +16,16 @@ typedef std::uint_fast32_t Key;
 class Generator {
 
 private:
-    Key m_State;
     const Key m_Max;
 
 public:
     /**
      * Constructor.
      *
-     * @param state Current state of the generator.
      * @param max Maximum number to return (inclusive).
      */
-    Generator(Key state, Key max);
-    Key generate();
-    Key state() const;
+    Generator(Key max);
+    Key generate(Key previous);
 
 };
 

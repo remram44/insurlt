@@ -5,20 +5,15 @@
 constexpr Key A = 1103515245;
 constexpr Key C = 12345;
 
-Generator::Generator(Key state, Key max)
-  : m_State(state), m_Max(max)
+Generator::Generator(Key max)
+  : m_Max(max)
 {
 }
 
-Key Generator::generate()
+Key Generator::generate(Key state)
 {
     do
-        m_State = (A * m_State + C) & 0xFFFFFFFF;
-    while(m_State > m_Max);
-    return m_State;
-}
-
-Key Generator::state() const
-{
-    return m_State;
+        state = (A * state + C) & 0xFFFFFFFF;
+    while(state > m_Max);
+    return state;
 }

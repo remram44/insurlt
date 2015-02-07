@@ -32,7 +32,7 @@ private:
 
 public:
     CombinedChoosers(std::initializer_list<Chooser> choosers);
-    std::string operator()(Key &key) const;
+    std::string operator()(Key key) const;
     size_t size() const;
 
 };
@@ -48,9 +48,8 @@ private:
     CombinedChoosers m_Choosers;
 
 public:
-    Insults(Key state);
-    std::string generate();
-    Key state() const;
+    Insults();
+    std::string generate(Key &state);
 
 };
 

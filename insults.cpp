@@ -42,7 +42,7 @@ CombinedChoosers::CombinedChoosers(std::initializer_list<Chooser> choosers)
 {
 }
 
-std::string CombinedChoosers::operator()(Key &key) const
+std::string CombinedChoosers::operator()(Key key) const
 {
     std::string result;
     for(const Chooser &ch : m_Choosers)
@@ -59,8 +59,8 @@ size_t CombinedChoosers::size() const
 }
 
 
-Insults::Insults(Key state)
-  : m_Generator(state, CHOICES),
+Insults::Insults()
+  : m_Generator(CHOICES),
     m_Choosers{
         Chooser{"vas-y clique "},
         Chooser{"salope",
@@ -114,13 +114,8 @@ Insults::Insults(Key state)
     assert(m_Choosers.size() == CHOICES);
 }
 
-std::string Insults::generate()
+std::string Insults::generate(Key &state)
 {
-    Key key = m_Generator.generate();
-    return m_Choosers(key);
-}
-
-Key Insults::state() const
-{
-    return m_Generator.state();
+    state = m_Generator.generate(state);
+    return m_Choosers(state);
 }
