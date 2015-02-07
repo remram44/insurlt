@@ -11,8 +11,8 @@ them very long, and full of obscenities.
 It is written in C++, the obvious tool for the job.
 
 This service used to exist as clique-salope.com, however it looks like it has
-now been decommisioned. Being such an important piece of the modern Internet,
-someone has to put it back online.
+now been discontinued. Being such an important piece of the modern Internet,
+someone had to put it back online.
 
 # How to setup
 
