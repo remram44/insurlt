@@ -93,11 +93,12 @@ static std::string get_var(const std::string &formdata,
 static const unsigned long REQ_IN_MAX = 10000;
 
 
-static long get_req(FCGX_Request *request, char **content,
+static std::string get_req(FCGX_Request *request,
                     std::istream &req_in, std::ostream &req_err)
 {
-    char * clenstr = FCGX_GetParam("CONTENT_LENGTH", request->envp);
+    char *clenstr = FCGX_GetParam("CONTENT_LENGTH", request->envp);
     unsigned long clen = REQ_IN_MAX;
+    std::string content;
 
     if(clenstr)
     {
@@ -114,15 +115,14 @@ static long get_req(FCGX_Request *request, char **content,
         if(clen > REQ_IN_MAX)
             clen = REQ_IN_MAX;
 
-        *content = new char[clen];
+        content.resize(clen);
 
-        req_in.read(*content, clen);
+        req_in.read(&content[0], clen);
         clen = req_in.gcount();
     }
     else
     {
         // *never* read req_in when CONTENT_LENGTH is missing or unparsable
-        *content = 0;
         clen = 0;
     }
 
@@ -135,7 +135,7 @@ static long get_req(FCGX_Request *request, char **content,
         req_in.ignore(1024);
     while(req_in.gcount() == 1024);
 
-    return clen;
+    return content;
 }
 
 
@@ -182,9 +182,7 @@ int main()
         // Although FastCGI supports writing before reading,
         // many http clients (browsers) don't support it (so
         // the connection deadlocks until a timeout expires!).
-        char *content;
-        unsigned long clen = get_req(&request, &content,
-                                     req_in, req_err);
+        std::string content = get_req(&request, req_in, req_err);
 
         // Gets method and path from environment
         std::string method, uri, host;
@@ -238,9 +236,6 @@ int main()
             // TODO: Lookup host in database, redirect with 301
             // or 404
         }
-
-        if(content)
-            delete[] content;
 
         // If the output streambufs had non-zero bufsizes and
         // were constructed outside of the accept loop (i.e.
