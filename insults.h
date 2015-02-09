@@ -41,15 +41,13 @@ public:
 class Insults {
 
 private:
-    static constexpr Key CHOICES = 3609722880;
-
-    Generator m_Generator;
-
     CombinedChoosers m_Choosers;
 
 public:
+    static constexpr Key CHOICES = 3609722880;
+
     Insults();
-    std::string generate(Key &state);
+    std::string generate(Key state);
 
 };
 

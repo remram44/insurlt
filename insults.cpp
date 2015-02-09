@@ -60,8 +60,7 @@ size_t CombinedChoosers::size() const
 
 
 Insults::Insults()
-  : m_Generator(CHOICES),
-    m_Choosers{
+  : m_Choosers{
         Chooser{"vas-y clique "},
         Chooser{"salope",
                 "gros con",
@@ -114,8 +113,7 @@ Insults::Insults()
     assert(m_Choosers.size() == CHOICES);
 }
 
-std::string Insults::generate(Key &state)
+std::string Insults::generate(Key state)
 {
-    state = m_Generator.generate(state);
     return m_Choosers(state);
 }
