@@ -25,7 +25,7 @@ ADD_CUSTOM_TARGET(
 SET(INSURLT_FILES permgen.cpp insults.cpp database.cpp)
 
 # Build executable
-ADD_EXECUTABLE(insurlt insurlt.cpp ${INSURLT_FILES})
+ADD_EXECUTABLE(insurlt cgi.cpp ${INSURLT_FILES})
 TARGET_LINK_LIBRARIES(insurlt ${EXTRA_LIBRARIES})
 SET_TARGET_PROPERTIES(
     insurlt PROPERTIES
