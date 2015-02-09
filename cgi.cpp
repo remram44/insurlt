@@ -8,6 +8,8 @@ extern char **environ;
 #include <cstdlib>
 #include <fcgio.h>
 
+#include "database.h"
+#include "insults.h"
 
 
 static bool startswith(const std::string &str, const std::string &prefix)
@@ -158,8 +160,14 @@ void error404(std::ostream &req_out)
 
 int main()
 {
-    int count = 0;
-    long pid = getpid();
+    const char *db_path = getenv("DATABASE_PATH");
+    if(!db_path || db_path[0] == 0)
+        return 1;
+
+    Insults insults;
+    Generator gen(insults.CHOICES);
+    Database db(db_path, gen);
+
 
     FCGX_Request request;
 
@@ -206,35 +214,56 @@ int main()
         {
             if(method == "GET" && uri == "/")
             {
-                // TODO: serve index
                 req_out << "Content-type: text/html\r\n"
                            "\r\n"
-                           "<TITLE>echo-cpp</TITLE>\n"
-                           "<H1>insurlt</H1>\n"
-                           "<H4>PID: " << pid << "</H4>\n"
-                           "<H4>Request Number: " << ++count << "</H4>\n";
-
-                req_out << "<H4>Computed variables</H4>\n<P>Method: "
-                        << method << ", host: " << host
-                        << ", uri: " << uri << "</P>\n";
+                           "<form method=\"post\" action=\"/\">\n"
+                           "<input type=\"test\" name=\"url\"/>\n"
+                           "<input type=\"submit\" value=\"Allez !\">\n"
+                           "</form>\n";
             }
             else if(method == "POST" && uri == "/")
             {
                 // TODO: process posted data, redirect to /created
+                std::string their_url = get_var(content, "url");
+                if(their_url.empty())
+                    error404(req_out);
+                else
+                {
+                    Key new_key = db.nextState();
+                    std::string our_url = insults.generate(new_key);
+                    db.storeURL(our_url, their_url);
+
+                    req_out << "Status: 301 Moved Permanently\r\n"
+                               "Location: /created?" << new_key << "\r\n"
+                               "Content-type: text/plain\r\n"
+                               "\r\n"
+                            << our_url << "\n";
+                }
             }
-            else if(uri == "/created")
+            else if(startswith(uri, "/created?"))
             {
                 // TODO: serve result
+                char *endptr;
+                Key key = std::strtol(uri.c_str() + 9, &endptr, 10);
+                if(*endptr)
+                    error404(req_out);
+                else
+                {
+                    std::string our_url = insults.generate(key);
+
+                    req_out << "Content-type: text/html\r\n"
+                               "\r\n"
+                               "<p>URL: " << our_url << "</p>\n";
+                }
             }
             else
-            {
                 error404(req_out);
-            }
         }
         else
         {
             // TODO: Lookup host in database, redirect with 301
             // or 404
+            error404(req_out);
         }
 
         // If the output streambufs had non-zero bufsizes and
