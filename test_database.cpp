@@ -1,6 +1,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 #include "database.h"
+#include "insults.h"
 
 
 class Database_test : public CppUnit::TestFixture {
@@ -9,12 +10,15 @@ public:
     void test_state()
     {
         try {
-            Database db(":memory:");
+            Generator gen(Insults::CHOICES);
+            Database db(":memory:", gen);
             CPPUNIT_ASSERT(db.getState() == 0);
             db.setState(42);
             CPPUNIT_ASSERT(db.getState() == 42);
             db.setState(189);
-            CPPUNIT_ASSERT(db.getState() == 189);
+            Key s = db.nextState();
+            CPPUNIT_ASSERT(s == 2405963442);
+            CPPUNIT_ASSERT(db.getState() == (sqlite3_int64)s);
         }
         catch(DatabaseError &e)
         {
@@ -25,7 +29,8 @@ public:
     void test_urls()
     {
         try {
-            Database db(":memory:");
+            Generator gen(Insults::CHOICES);
+            Database db(":memory:", gen);
             CPPUNIT_ASSERT(
                     db.resolveURL("http://aaa.clique-salope.ovh/", true) ==
                     "");

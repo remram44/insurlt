@@ -4,6 +4,8 @@
 #include <exception>
 #include <sqlite3.h>
 
+#include "permgen.h"
+
 
 class DatabaseError : std::exception {
 
@@ -24,6 +26,8 @@ public:
 class Database {
 
 private:
+    Generator &m_Generator;
+
     sqlite3 *m_DB;
 
     sqlite3_stmt *m_stmtGetState;
@@ -37,7 +41,7 @@ protected:
     void incrementViews(const std::string &our_url) throw(DatabaseError);
 
 public:
-    Database(const char *filepath) throw(DatabaseError);
+    Database(const char *filepath, Generator &generator) throw(DatabaseError);
     ~Database();
 
     void storeURL(const std::string &our_url,
@@ -49,6 +53,7 @@ public:
 
     sqlite3_int64 getState() throw(DatabaseError);
     void setState(sqlite3_int64 state) throw(DatabaseError);
+    Key nextState() throw(DatabaseError);
 
 };
 

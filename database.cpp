@@ -22,7 +22,9 @@ const char *DatabaseError::what() const throw()
 }
 
 
-Database::Database(const char *filepath) throw(DatabaseError)
+Database::Database(const char *filepath, Generator &generator)
+        throw(DatabaseError)
+  : m_Generator(generator)
 {
     if(sqlite3_open(filepath, &m_DB) != SQLITE_OK)
         throw DatabaseError(std::string("Can't open ") + filepath);
@@ -221,4 +223,13 @@ void Database::setState(sqlite3_int64 state) throw(DatabaseError)
 
 sqlerror:
     throw DatabaseError("Couldn't set the generator state");
+}
+
+Key Database::nextState() throw(DatabaseError)
+{
+    // TODO: transaction
+    Key state = getState();
+    state = m_Generator.generate(state);
+    setState(state);
+    return state;
 }

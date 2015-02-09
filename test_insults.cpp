@@ -12,10 +12,12 @@ private:
 public:
     void test_insults()
     {
+        Generator gen(Insults::CHOICES);
         Insults insults;
         Key state = 0;
         for(size_t i = 0; i < NB_GENERATE; ++i)
         {
+            state = gen.generate(state);
             std::string insult = insults.generate(state);
             CPPUNIT_ASSERT(insult == expected_insults[i]);
         }
