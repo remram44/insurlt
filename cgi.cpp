@@ -16,6 +16,79 @@ static bool startswith(const std::string &str, const std::string &prefix)
 }
 
 
+static int base16_decode(char e)
+{
+    if(e >= '0' && e <= '9')
+        return (unsigned char)(e - '0');
+    else if(e >= 'a' && e <= 'f')
+        return (unsigned char)(e - 'a' + 10);
+    else if(e >= 'A' && e <= 'F')
+        return (unsigned char)(e - 'A' + 10);
+    else
+        return -1;
+}
+
+
+static std::string get_var(const std::string &formdata,
+                           const std::string &var)
+{
+    std::string buffer;
+    enum EState { VARNAME, VALUE, WRONGVALUE };
+    EState state = VARNAME;
+    for(size_t i = 0; i < formdata.size(); ++i)
+    {
+        switch(state)
+        {
+        case VARNAME:
+            if(formdata[i] == '=')
+            {
+                if(buffer == var)
+                    state = VALUE;
+                else
+                    state = WRONGVALUE;
+                buffer = "";
+            }
+            else
+                buffer += formdata[i];
+            break;
+        case VALUE:
+            if(formdata[i] == '&')
+                return buffer;
+            else if(formdata[i] == '+')
+                buffer += ' ';
+            else if(formdata[i] == '%')
+            {
+                if(i + 2 >= formdata.size())
+                {
+                    buffer += formdata.substr(i);
+                    i = formdata.size();
+                }
+                else
+                {
+                    int char1 = base16_decode(formdata[i+1]);
+                    int char2 = base16_decode(formdata[i+2]);
+                    if(char1 < 0 || char2 < 0)
+                        buffer += formdata.substr(i, 3);
+                    else
+                        buffer += (char)((char1 << 4) | char2);
+                    i += 2;
+                }
+            }
+            else
+                buffer += formdata[i];
+            break;
+        case WRONGVALUE:
+            if(formdata[i] == '&')
+                state = VARNAME;
+            break;
+        }
+    }
+    if(state == VALUE)
+        return buffer;
+    return "";
+}
+
+
 // Maximum number of bytes allowed to be read from stdin
 static const unsigned long REQ_IN_MAX = 10000;
 
