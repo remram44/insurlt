@@ -10,7 +10,7 @@ extern char **environ;
 
 
 
-bool startswith(const std::string &str, const std::string &prefix)
+static bool startswith(const std::string &str, const std::string &prefix)
 {
     return str.compare(0, prefix.length(), prefix) == 0;
 }
@@ -159,6 +159,11 @@ int main()
             {
                 error404(req_out);
             }
+        }
+        else
+        {
+            // TODO: Lookup host in database, redirect with 301
+            // or 404
         }
 
         if(content)
