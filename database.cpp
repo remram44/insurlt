@@ -108,6 +108,7 @@ Database::~Database()
     sqlite3_finalize(m_stmtGetURL);
     sqlite3_finalize(m_stmtIncrementURLViews);
     sqlite3_finalize(m_stmtGetViews);
+    sqlite3_close(m_DB);
 }
 
 void Database::storeURL(const std::string &our_url,
