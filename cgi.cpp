@@ -112,9 +112,8 @@ static std::string get_req(FCGX_Request *request,
                     << "\"\n";
             clen = REQ_IN_MAX;
         }
-
         // *always* put a cap on the amount of data that will be read
-        if(clen > REQ_IN_MAX)
+        else if(clen > REQ_IN_MAX)
             clen = REQ_IN_MAX;
 
         content.resize(clen);
@@ -223,7 +222,6 @@ int main()
             }
             else if(method == "POST" && uri == "/")
             {
-                // TODO: process posted data, redirect to /created
                 std::string their_url = get_var(content, "url");
                 if(their_url.empty())
                     error404(req_out);
@@ -242,7 +240,6 @@ int main()
             }
             else if(startswith(uri, "/created?"))
             {
-                // TODO: serve result
                 char *endptr;
                 Key key = std::strtol(uri.c_str() + 9, &endptr, 10);
                 if(*endptr)

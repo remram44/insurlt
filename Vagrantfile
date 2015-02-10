@@ -20,7 +20,7 @@ make
 NESTED
 sudo aptitude install -y apache2 libapache2-mod-fcgid
 sudo a2enmod fcgid rewrite
-sudo cat > /etc/apache2/sites-available/insurlt <<NESTED
+sudo cat > /etc/apache2/sites-available/insurlt <<'NESTED'
 <VirtualHost *>
     ServerAdmin webmaster@localhost
 

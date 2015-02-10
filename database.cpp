@@ -42,7 +42,7 @@ Database::Database(const char *filepath, Generator &generator)
             database_setup = true;
             std::cerr << "Database initialized, generator state: " << state
                       << std::endl;
-            sqlite3_step(m_stmtGetState);
+            ret = sqlite3_step(m_stmtGetState);
         }
         if(ret != SQLITE_DONE)
             goto sqlerror;
