@@ -28,6 +28,7 @@ Database::Database(const char *filepath, Generator &generator)
 {
     if(sqlite3_open(filepath, &m_DB) != SQLITE_OK)
         throw DatabaseError(std::string("Can't open ") + filepath);
+    sqlite3_busy_timeout(m_DB, 50);
 
     // Checks whether the database is already setup
     bool database_setup = false;
@@ -158,7 +159,7 @@ std::string Database::resolveURL(const std::string &our_url,
     if(ret == SQLITE_DONE)
     {
         sqlite3_reset(m_stmtGetURL);
-        return std::string();
+        return "";
     }
     else if(ret == SQLITE_ROW)
     {
