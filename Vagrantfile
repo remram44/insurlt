@@ -31,6 +31,8 @@ sudo cat > /etc/apache2/sites-available/insurlt <<'NESTED'
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ /insurlt.fcgi [L,H=fcgid-script]
 
+    FcgidInitialEnv DATABASE_PATH /tmp/database.sqlite3
+
     <Location />
         AddHandler fcgid-script .fcgi
         Options +ExecCGI
@@ -61,5 +63,5 @@ sudo ln -s ../sites-available/insurlt /etc/apache2/sites-enabled/000-insurlt
 sudo service apache2 restart
 SCRIPT
 
-  config.vm.network "forwarded_port", guest: 80, host:8080
+  config.vm.network "forwarded_port", guest: 80, host:8000
 end
