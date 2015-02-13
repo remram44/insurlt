@@ -231,7 +231,7 @@ int main()
                     std::string our_url = insults.generate(new_key);
                     db.storeURL(our_url, their_url);
 
-                    req_out << "Status: 301 Moved Permanently\r\n"
+                    req_out << "Status: 303 See Other\r\n"
                                "Location: /created?" << new_key << "\r\n"
                                "Content-type: text/plain\r\n"
                                "\r\n"
