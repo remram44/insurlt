@@ -258,9 +258,21 @@ int main()
         }
         else
         {
-            // TODO: Lookup host in database, redirect with 301
-            // or 404
-            error404(req_out);
+            std::string our_url = host;
+            size_t end = our_url.find_first_of(":/");
+            if(end != std::string::npos)
+                our_url = our_url.substr(0, end);
+            std::string their_url = db.resolveURL(our_url, true);
+            if(their_url.empty())
+                error404(req_out);
+            else
+            {
+                req_out << "Status: 301 Moved Permanently\r\n"
+                           "Location: " << their_url << "\r\n"
+                           "Content-type: text/plain\r\n"
+                           "\r\n"
+                        << their_url << "\n";
+            }
         }
 
         // If the output streambufs had non-zero bufsizes and
