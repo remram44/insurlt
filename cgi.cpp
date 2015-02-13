@@ -31,6 +31,47 @@ static int base16_decode(char e)
 }
 
 
+
+class URLValidator {
+
+private:
+    unsigned char m_Table[256];
+
+public:
+    static const char *const ALLOWED_CHARS;
+
+    URLValidator();
+    bool operator()(const std::string &url);
+
+} valid_url;
+
+const char *const URLValidator::ALLOWED_CHARS =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    "abcdefghijklmnopqrstuvwxyz"
+    "0123456789"
+    "-._~:/?#[]@!$&'()*+,;="
+    "%";
+
+URLValidator::URLValidator()
+{
+    for(size_t i = 0; i <= 255; ++i)
+        m_Table[i] = 0;
+    for(const char *c = ALLOWED_CHARS; *c != 0; ++c)
+        m_Table[(size_t)(unsigned char)*c] = 1;
+}
+
+bool URLValidator::operator()(const std::string &url)
+{
+    for(size_t i = 0; i < url.size(); ++i)
+    {
+        const unsigned char c = url[i];
+        if(!m_Table[(size_t)c])
+            return false;
+    }
+    return true;
+}
+
+
 static std::string get_var(const std::string &formdata,
                            const std::string &var)
 {
@@ -223,7 +264,7 @@ int main()
             else if(method == "POST" && uri == "/")
             {
                 std::string their_url = get_var(content, "url");
-                if(their_url.empty())
+                if(their_url.empty() || !valid_url(their_url))
                     error404(req_out);
                 else
                 {
