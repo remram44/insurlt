@@ -36,6 +36,9 @@ private:
     sqlite3_stmt *m_stmtGetURL;
     sqlite3_stmt *m_stmtIncrementURLViews;
     sqlite3_stmt *m_stmtGetViews;
+    sqlite3_stmt *m_stmtBegin;
+    sqlite3_stmt *m_stmtCommit;
+    sqlite3_stmt *m_stmtRollback;
 
 protected:
     void incrementViews(const std::string &our_url) throw(DatabaseError);

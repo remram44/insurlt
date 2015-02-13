@@ -19,6 +19,8 @@ public:
             Key s = db.nextState();
             CPPUNIT_ASSERT(s == 2405963442);
             CPPUNIT_ASSERT(db.getState() == (sqlite3_int64)s);
+            CPPUNIT_ASSERT(db.nextState() == 2246579715);
+            CPPUNIT_ASSERT(db.nextState() == 2212002176);
         }
         catch(DatabaseError &e)
         {

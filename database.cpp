@@ -94,6 +94,18 @@ Database::Database(const char *filepath, Generator &generator)
             m_DB,
             "SELECT views FROM urls WHERE our_url=?;",
             -1, &m_stmtGetViews, NULL));
+    check(sqlite3_prepare_v2(
+            m_DB,
+            "BEGIN TRANSACTION;",
+            -1, &m_stmtBegin, NULL));
+    check(sqlite3_prepare_v2(
+            m_DB,
+            "COMMIT;",
+            -1, &m_stmtCommit, NULL));
+    check(sqlite3_prepare_v2(
+            m_DB,
+            "ROLLBACK;",
+            -1, &m_stmtRollback, NULL));
 
     return;
 
@@ -229,9 +241,37 @@ sqlerror:
 
 Key Database::nextState() throw(DatabaseError)
 {
-    // TODO: transaction
-    Key state = getState();
-    state = m_Generator.generate(state);
-    setState(state);
-    return state;
+    while(true)
+    {
+        if(sqlite3_step(m_stmtBegin) != SQLITE_DONE)
+            goto sqlerror;
+        check(sqlite3_reset(m_stmtBegin));
+
+        Key state = getState();
+        state = m_Generator.generate(state);
+
+        check(sqlite3_bind_int64(m_stmtSetState, 1, state));
+        int ret = sqlite3_step(m_stmtSetState);
+        check(sqlite3_reset(m_stmtSetState));
+        if(ret == SQLITE_DONE)
+        {
+            ret = sqlite3_step(m_stmtCommit);
+            check(sqlite3_reset(m_stmtCommit));
+        }
+        switch(ret)
+        {
+        case SQLITE_DONE:
+            return state;
+        case SQLITE_BUSY:
+            if(sqlite3_step(m_stmtRollback) != SQLITE_DONE)
+                goto sqlerror;
+            check(sqlite3_reset(m_stmtRollback));
+            continue;
+        default:
+            goto sqlerror;
+        }
+    }
+
+sqlerror:
+    throw DatabaseError("Couldn't advance the generator state");
 }
