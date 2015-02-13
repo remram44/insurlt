@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <unistd.h>
 
 #include "database.h"
 
@@ -96,7 +97,7 @@ Database::Database(const char *filepath, Generator &generator)
             -1, &m_stmtGetViews, NULL));
     check(sqlite3_prepare_v2(
             m_DB,
-            "BEGIN TRANSACTION;",
+            "BEGIN IMMEDIATE;",
             -1, &m_stmtBegin, NULL));
     check(sqlite3_prepare_v2(
             m_DB,
@@ -244,11 +245,21 @@ sqlerror:
 
 Key Database::nextState() throw(DatabaseError)
 {
-    while(true)
+    for(int wait = 0; wait < 50; wait += 10)
     {
-        if(sqlite3_step(m_stmtBegin) != SQLITE_DONE)
+        if(wait > 0)
+            usleep(wait * 1000);
+        switch(sqlite3_step(m_stmtBegin))
+        {
+        case SQLITE_BUSY:
+            check(sqlite3_reset(m_stmtBegin));
+            continue;
+        case SQLITE_DONE:
+            check(sqlite3_reset(m_stmtBegin));
+            break;
+        default:
             goto sqlerror;
-        check(sqlite3_reset(m_stmtBegin));
+        }
 
         Key state = getState();
         state = m_Generator.generate(state);
