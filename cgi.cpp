@@ -62,6 +62,9 @@ URLValidator::URLValidator()
 
 bool URLValidator::operator()(const std::string &url)
 {
+    if(!startswith(url, "http://") && !startswith(url, "https://") &&
+       !startswith(url, "ftp://"))
+        return false;
     for(size_t i = 0; i < url.size(); ++i)
     {
         const unsigned char c = url[i];
