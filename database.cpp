@@ -121,6 +121,9 @@ Database::~Database()
     sqlite3_finalize(m_stmtGetURL);
     sqlite3_finalize(m_stmtIncrementURLViews);
     sqlite3_finalize(m_stmtGetViews);
+    sqlite3_finalize(m_stmtBegin);
+    sqlite3_finalize(m_stmtCommit);
+    sqlite3_finalize(m_stmtRollback);
     sqlite3_close(m_DB);
 }
 
