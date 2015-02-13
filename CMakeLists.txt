@@ -22,7 +22,7 @@ ADD_CUSTOM_TARGET(
     COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/public")
 
 # Build source list
-SET(INSURLT_FILES permgen.cpp insults.cpp database.cpp)
+SET(INSURLT_FILES permgen.cpp insults.cpp database.cpp template.cpp)
 
 # Build executable
 ADD_EXECUTABLE(insurlt cgi.cpp ${INSURLT_FILES})
@@ -40,7 +40,7 @@ IF(BUILD_TESTS)
     INCLUDE_DIRECTORIES(${CPPUNIT_INCLUDE_DIRS})
 
     SET(TESTS_FILES test.cpp
-        test_permgen.cpp test_insults.cpp test_database.cpp
+        test_permgen.cpp test_insults.cpp test_database.cpp test_template.cpp
         ${INSURLT_FILES})
 
     ADD_EXECUTABLE(tests ${TESTS_FILES})
