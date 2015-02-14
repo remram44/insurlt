@@ -21,6 +21,12 @@ const char *TemplateError::what() const throw()
 }
 
 
+void EmptyVariableProvider::handle_variable(std::ostream &out, const std::string &name)
+{
+    throw TemplateError("Missing value for variable " + name);
+}
+
+
 static void raise_error(const std::string &filename, int pos,
                         const std::string &error)
 {

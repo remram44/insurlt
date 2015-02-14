@@ -30,6 +30,14 @@ public:
 };
 
 
+class EmptyVariableProvider : public VariableProvider {
+
+public:
+    void handle_variable(std::ostream &out, const std::string &name);
+
+};
+
+
 template<typename Map>
 class MapVariableProvider : public VariableProvider {
 
@@ -49,7 +57,7 @@ public:
         }
         catch(std::out_of_range &e)
         {
-            throw TemplateError("Missing value for variable" + name);
+            throw TemplateError("Missing value for variable " + name);
         }
     }
 
@@ -66,10 +74,9 @@ public:
 
     typedef std::pair<BlockType, std::string> Block;
 
-private:
+protected:
     std::vector<Block> m_Blocks;
 
-protected:
     static bool is_space(char c);
 
 public:
@@ -90,6 +97,11 @@ public:
     }
     void render(std::ostream &out, VariableProvider &vars);
     void render(std::ostream &out, std::initializer_list<const char*> vars);
+    inline void render(std::ostream &out)
+    {
+        EmptyVariableProvider empty;
+        render(out, empty);
+    }
 
 };
 

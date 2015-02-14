@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #define private public
+#define protected public
 #include "template.h"
 
 
@@ -100,11 +101,10 @@ public:
                         Item("test", "essai")
                     });
             CPPUNIT_ASSERT_THROW(
-                tpl.render(
-                        oss,
-                        std::unordered_map<std::string, std::string>{
-                            Item("is", "est")
-                        }),
+                tpl.render(oss, {"is", "est"}),
+                TemplateError);
+            CPPUNIT_ASSERT_THROW(
+                tpl.render(oss),
                 TemplateError);
         }
         catch(TemplateError &e)
