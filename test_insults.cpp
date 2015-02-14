@@ -32,24 +32,24 @@ public:
 CPPUNIT_TEST_SUITE_REGISTRATION(Insults_test);
 
 const char *Insults_test::expected_insults[NB_GENERATE] = {
-    "vas-y.clique-sale.fils-de-pute-ou.va.crever.ta.fille."
-        "au.cimetiere.raclure.de.chiottes.allez.clique-salope.ovh",
-    "vas-y-clique.fils.de-chienne.ou-va.defoncer.l-anus-de.ta-soeur-"
-        "sous-ma.caisse.petite-catin-allez.clique-salope.ovh",
-    "vas-y-clique-grosse.merde.ou.va.defoncer.l-anus-de.ton.grand.pere-"
-        "sous-ma.caisse.pauvre-merde-allez.clique-salope.ovh",
-    "vas-y.clique.sale-encule.ou-va-trouer-le-cul.de.ta-grand-mere."
-        "dans-les-champs-petite-catin-allez.clique-salope.ovh",
-    "vas-y.clique-gros.con.ou.va-trouer.le.cul-de.ta-grand-mere."
-        "chez.le-coiffeur.raclure-de-chiottes.allez.clique-salope.ovh",
-    "vas-y-clique.sale.encule.ou-va-trouer.le-cul.de-ton.grand.pere-"
-        "dans.les-champs.grosse-pute-allez.clique-salope.ovh",
-    "vas-y-clique-sale.fils-de-pute-ou.va.gifler.ta.soeur-"
-        "a.carrefour-pauvre-merde.allez.clique-salope.ovh",
-    "vas-y.clique.salope-ou.va.trouer-le.cul.de.ton.grand.pere-"
-        "sous-ma.caisse-sale-enflure-allez.clique-salope.ovh",
-    "vas-y.clique-pauvre-con.ou.va.defoncer.l-anus.de.ton-grand.pere-"
-        "dans.ma-cave.fils.de-chien-allez.clique-salope.ovh",
-    "vas-y-clique.sale-fils-de-pute-ou-va-trouer-le-cul.de.ta.grand-mere."
-        "dans-les-champs.face-de-pet.allez.clique-salope.ovh"
+    "click.the.link-asshole-or.spit.on.your.daugther."
+        "in.a.cemetery.cunt.go.on.click-bitch.ovh",
+    "click-the-link-scumbag-or.go.eat-your.grandmother."
+        "in-a.bus-you.dipshit-come.on.click-bitch.ovh",
+    "click-the.link-pig.or.spit-on-your-dog-"
+        "under.a-car-idiot.go.on.click-bitch.ovh",
+    "click.the-link.asshole-or-spit.on.your-dog-"
+        "under.a.car-idiot-come-on.click-bitch.ovh",
+    "click.the-link-scumbag.or.spit-on-your.dog-"
+        "up.your-own-asshole.you.dipshit-go.on.click-bitch.ovh",
+    "click.the.link.nerd-or-go.kill-your-daugther-"
+        "in-a-doghouse.you-faggot-come-on.click-bitch.ovh",
+    "click.the.link-bitch-or-go.fuck-your.wife."
+        "under-a-car.you.slut-come.on.click-bitch.ovh",
+    "click-the-link.smart-ass.or-spit-on-your-grandmother-"
+        "in-a.church-stupid.go-on.click-bitch.ovh",
+    "click-the-link-pig-or.go.eat-your-pet."
+        "under-a-car.you-slut-come.on.click-bitch.ovh",
+    "click-the.link.bitch.or.spit-on.your-pet-"
+        "up-your.own-asshole-you.cunt.come.on.click-bitch.ovh",
 };
