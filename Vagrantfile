@@ -27,7 +27,7 @@ sudo cat > /etc/apache2/sites-available/insurlt <<'NESTED'
     DocumentRoot /home/vagrant/build/public/
 
     RewriteEngine on
-    RewriteCond %{REQUEST_FILENAME} !-d [OR]
+    RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ /insurlt.fcgi [L,H=fcgid-script]
 
