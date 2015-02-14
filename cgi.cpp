@@ -10,6 +10,7 @@ extern char **environ;
 
 #include "database.h"
 #include "insults.h"
+#include "template.h"
 
 
 static bool startswith(const std::string &str, const std::string &prefix)
@@ -182,28 +183,22 @@ static std::string get_req(FCGX_Request *request,
 }
 
 
-void error404(std::ostream &req_out)
-{
-    req_out << "Status: 404 Not Found\r\n"
-               "Server: insurlt\r\n"
-               "Content-Type: text/html; charset=utf-8\r\n"
-               "\r\n"
-               "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n"
-               "<html><head>\n"
-               "<title>404 Not Found</title>\n"
-               "</head><body>\n"
-               "<h1>Erreur 404</h1>\n"
-               "<p>Ya rien ici. <a href=\"http://clique-salope.ovh/\">"
-               "Retourne \xC3\xA0 l'index, salope.</a></p>\n"
-               "</body></html>\n";
-}
-
-
 int main()
 {
     const char *db_path = getenv("DATABASE_PATH");
     if(!db_path || db_path[0] == 0)
         return 1;
+    std::string tpl_path;
+    {
+        const char *tpl_path_ = getenv("TEMPLATES_PATH");
+        if(!tpl_path_ || tpl_path_[0] == 0)
+            return 1;
+        tpl_path = tpl_path_;
+    }
+
+    Template index(tpl_path + "/index.html");
+    Template error(tpl_path + "/error.html");
+    Template created(tpl_path + "/created.html");
 
     Insults insults;
     Generator gen(insults.CHOICES);
@@ -255,18 +250,24 @@ int main()
         {
             if(method == "GET" && uri == "/")
             {
-                req_out << "Content-type: text/html\r\n"
-                           "\r\n"
-                           "<form method=\"post\" action=\"/\">\n"
-                           "<input type=\"test\" name=\"url\"/>\n"
-                           "<input type=\"submit\" value=\"Allez !\">\n"
-                           "</form>\n";
+                req_out << "Server: insurlt\r\n"
+                           "Content-type: text/html\r\n"
+                           "\r\n";
+                index.render(req_out);
             }
             else if(method == "POST" && uri == "/")
             {
                 std::string their_url = get_var(content, "url");
                 if(their_url.empty() || !valid_url(their_url))
-                    error404(req_out);
+                {
+                    req_out << "Status: 404 Not Found\r\n"
+                               "Server: insurlt\r\n"
+                               "Content-type: text/html; charset=utf-8\r\n"
+                               "\r\n";
+                    error.render(req_out, {
+                            "message",
+                            "T'as oubli\xC3\xA9 l'URL, face de pet ?"});
+                }
                 else
                 {
                     Key new_key = db.nextState();
@@ -274,6 +275,7 @@ int main()
                     db.storeURL(our_url, their_url);
 
                     req_out << "Status: 303 See Other\r\n"
+                               "Server: insurlt\r\n"
                                "Location: /created?" << new_key << "\r\n"
                                "Content-type: text/plain\r\n"
                                "\r\n"
@@ -285,18 +287,36 @@ int main()
                 char *endptr;
                 Key key = std::strtol(uri.c_str() + 9, &endptr, 10);
                 if(*endptr)
-                    error404(req_out);
+                {
+                    req_out << "Status: 404 Not Found\r\n"
+                               "Server: insurlt\r\n"
+                               "Content-type: text/html\r\n"
+                               "\r\n";
+                    error.render(req_out, {
+                            "message",
+                            "Il manque un num\xC3\xA9ro, b\xC3\xA2tard"});
+                }
                 else
                 {
                     std::string our_url = insults.generate(key);
 
-                    req_out << "Content-type: text/html\r\n"
-                               "\r\n"
-                               "<p>URL: " << our_url << "</p>\n";
+                    req_out << "Server: insurlt\r\n"
+                               "Content-type: text/html\r\n"
+                               "\r\n";
+                    created.render(req_out, {
+                            "url", our_url.c_str()});
                 }
             }
             else
-                error404(req_out);
+            {
+                req_out << "Status: 404 Not Found\r\n"
+                           "Server: insurlt\r\n"
+                           "Content-type: text/html\r\n"
+                           "\r\n";
+                error.render(req_out, {
+                        "message",
+                        "Il n'y a rien ici. T'es perdu, grosse merde ?"});
+            }
         }
         else
         {
@@ -306,10 +326,19 @@ int main()
                 our_url = our_url.substr(0, end);
             std::string their_url = db.resolveURL(our_url, true);
             if(their_url.empty())
-                error404(req_out);
+            {
+                req_out << "Status: 404 Not Found\r\n"
+                           "Server: insurlt\r\n"
+                           "Content-type: text/html\r\n"
+                           "\r\n";
+                error.render(req_out, {
+                        "message",
+                        "Il n'y a rien ici. T'es perdu, grosse merde ?"});
+            }
             else
             {
                 req_out << "Status: 301 Moved Permanently\r\n"
+                           "Server: insurlt\r\n"
                            "Location: " << their_url << "\r\n"
                            "Content-type: text/plain\r\n"
                            "\r\n"
