@@ -21,6 +21,13 @@ ADD_CUSTOM_TARGET(
     public
     COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/public")
 
+# Copies assets
+ADD_CUSTOM_TARGET(
+    assets ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    ${CMAKE_SOURCE_DIR}/assets/clippy.swf
+    "${CMAKE_BINARY_DIR}/public/clippy.swf")
+
 # Build source list
 SET(INSURLT_FILES permgen.cpp insults.cpp database.cpp template.cpp)
 
