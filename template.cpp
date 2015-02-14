@@ -78,7 +78,11 @@ void Template::compile(std::istream &source, const std::string &filename)
             if(c == '{')
                 state = OPEN_2;
             else
-                raise_error(filename, pos, "expecting {");
+            {
+                current += '{';
+                state = NORMAL;
+                current += c;
+            }
             break;
         case OPEN_2:
             if(!is_space(c))
@@ -116,8 +120,14 @@ void Template::compile(std::istream &source, const std::string &filename)
             break;
         }
     }
-    if(state != NORMAL)
+    if(state == OPEN_1)
+    {
+        current += '{';
+        state = NORMAL;
+    }
+    else if(state != NORMAL)
         raise_error(filename, pos, "premature end of stream");
+
     if(!current.empty())
         m_Blocks.push_back(Block(DATA, current));
 }

@@ -35,8 +35,8 @@ public:
 
     void test_render()
     {
-        std::istringstream stream("Th{{end  }} {{ verb }}: {{  what}}!");
         try {
+            std::istringstream stream("Th{{end  }} {{ verb }}: {{  what}}!");
             Template tpl(stream);
             typedef std::pair<std::string, std::string> Item;
 
@@ -59,6 +59,16 @@ public:
                         "what", "trees"
                     });
             CPPUNIT_ASSERT(oss.str() == "These are: trees!");
+
+            oss.str("");
+            stream.str("Test2{");
+            Template(stream).render(oss);
+            CPPUNIT_ASSERT(oss.str() == "Test2{");
+
+            oss.str("");
+            stream.str("Test2{and stuff");
+            Template(stream).render(oss);
+            CPPUNIT_ASSERT(oss.str() == "Test2{and stuff");
         }
         catch(TemplateError &e)
         {
@@ -77,9 +87,8 @@ public:
 
     void test_errors()
     {
-        do_error_test("This{", true);
         do_error_test("This{{", true);
-        do_error_test("This{ {is}}", true);
+        do_error_test("This{ {is}}", false);
         do_error_test("This{{is} }", true);
         do_error_test("This{{is}}", false);
         do_error_test("This{{is}", true);
