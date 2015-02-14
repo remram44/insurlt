@@ -44,7 +44,7 @@ private:
     CombinedChoosers m_Choosers;
 
 public:
-    static constexpr Key CHOICES = 3609722880;
+    static constexpr Key CHOICES = 3460300800;
 
     Insults();
     std::string generate(Key state);

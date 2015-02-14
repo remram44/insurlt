@@ -247,8 +247,8 @@ int main()
 
         if(startswith(host, "localhost") ||
            startswith(host, "127.") ||
-           startswith(host, "www.clique-salope.ovh") ||
-           startswith(host, "clique-salope.ovh"))
+           startswith(host, "www.click-bitch.ovh") ||
+           startswith(host, "click-bitch.ovh"))
         {
             if(method == "GET" && uri == "/")
             {
@@ -268,7 +268,7 @@ int main()
                                "\r\n";
                     error.render(req_out, {
                             "message",
-                            "T'as oubli\xC3\xA9 l'URL, face de pet ?"});
+                            "Did you forget the URL, fuckface?"});
                 }
                 else
                 {
@@ -296,7 +296,7 @@ int main()
                                "\r\n";
                     error.render(req_out, {
                             "message",
-                            "Il manque un num\xC3\xA9ro, b\xC3\xA2tard"});
+                            "You're missing a number, asshole"});
                 }
                 else
                 {
@@ -317,7 +317,7 @@ int main()
                            "\r\n";
                 error.render(req_out, {
                         "message",
-                        "Il n'y a rien ici. T'es perdu, grosse merde ?"});
+                        "Nothing here. Are you lost, smart-ass?"});
             }
         }
         else
@@ -335,7 +335,7 @@ int main()
                            "\r\n";
                 error.render(req_out, {
                         "message",
-                        "Il n'y a rien ici. T'es perdu, grosse merde ?"});
+                        "Nothing here. Are you lost, smart-ass?"});
             }
             else
             {
