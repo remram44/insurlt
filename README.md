@@ -24,4 +24,4 @@ need to update the source to match your domain name and favorite insults.
 
 # Check it out
 
-Once in working condition, this will be deployed at clique-salope.ovh.
+http://clique-salope.ovh/
