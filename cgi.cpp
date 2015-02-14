@@ -251,7 +251,7 @@ int main()
             if(method == "GET" && uri == "/")
             {
                 req_out << "Server: insurlt\r\n"
-                           "Content-type: text/html\r\n"
+                           "Content-type: text/html; charset=utf-8\r\n"
                            "\r\n";
                 index.render(req_out);
             }
@@ -290,7 +290,7 @@ int main()
                 {
                     req_out << "Status: 404 Not Found\r\n"
                                "Server: insurlt\r\n"
-                               "Content-type: text/html\r\n"
+                               "Content-type: text/html; charset=utf-8\r\n"
                                "\r\n";
                     error.render(req_out, {
                             "message",
@@ -301,7 +301,7 @@ int main()
                     std::string our_url = insults.generate(key);
 
                     req_out << "Server: insurlt\r\n"
-                               "Content-type: text/html\r\n"
+                               "Content-type: text/html; charset=utf-8\r\n"
                                "\r\n";
                     created.render(req_out, {
                             "url", our_url.c_str()});
@@ -311,7 +311,7 @@ int main()
             {
                 req_out << "Status: 404 Not Found\r\n"
                            "Server: insurlt\r\n"
-                           "Content-type: text/html\r\n"
+                           "Content-type: text/html; charset=utf-8\r\n"
                            "\r\n";
                 error.render(req_out, {
                         "message",
@@ -329,7 +329,7 @@ int main()
             {
                 req_out << "Status: 404 Not Found\r\n"
                            "Server: insurlt\r\n"
-                           "Content-type: text/html\r\n"
+                           "Content-type: text/html; charset=utf-8\r\n"
                            "\r\n";
                 error.render(req_out, {
                         "message",
