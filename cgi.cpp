@@ -279,7 +279,7 @@ int main()
                                "Location: /created?" << new_key << "\r\n"
                                "Content-type: text/plain\r\n"
                                "\r\n"
-                            << our_url << "\n";
+                               "http://" << our_url << "/\n";
                 }
             }
             else if(startswith(uri, "/created?"))
@@ -304,7 +304,7 @@ int main()
                                "Content-type: text/html; charset=utf-8\r\n"
                                "\r\n";
                     created.render(req_out, {
-                            "url", our_url.c_str()});
+                            "url", ("http://" + our_url + "/").c_str()});
                 }
             }
             else
