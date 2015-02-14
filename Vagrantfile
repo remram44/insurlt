@@ -18,7 +18,7 @@ cmake /vagrant -DBUILD_TESTS=on
 make
 ./tests
 NESTED
-sudo aptitude install -y apache2 libapache2-mod-fcgid
+sudo aptitude install -y apache2 libapache2-mod-fcgid curl
 sudo a2enmod fcgid rewrite
 sudo cat > /etc/apache2/sites-available/insurlt <<'NESTED'
 <VirtualHost *>
@@ -32,6 +32,7 @@ sudo cat > /etc/apache2/sites-available/insurlt <<'NESTED'
     RewriteRule ^(.*)$ /insurlt.fcgi [L,H=fcgid-script]
 
     FcgidInitialEnv DATABASE_PATH /tmp/database.sqlite3
+    FcgidInitialEnv TEMPLATES_PATH /vagrant
 
     <Location />
         AddHandler fcgid-script .fcgi
