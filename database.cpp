@@ -245,7 +245,7 @@ sqlerror:
 
 Key Database::nextState() throw(DatabaseError)
 {
-    for(int wait = 0; wait < 50; wait += 10)
+    for(int wait = 0; wait <= 20; wait += 5)
     {
         if(wait > 0)
             usleep(wait * 1000);
