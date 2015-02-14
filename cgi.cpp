@@ -31,7 +31,6 @@ static int base16_decode(char e)
 }
 
 
-
 class URLValidator {
 
 private:
@@ -137,7 +136,6 @@ static std::string get_var(const std::string &formdata,
 
 // Maximum number of bytes allowed to be read from stdin
 static const unsigned long REQ_IN_MAX = 10000;
-
 
 static std::string get_req(FCGX_Request *request,
                     std::istream &req_in, std::ostream &req_err)

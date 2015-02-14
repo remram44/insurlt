@@ -65,9 +65,59 @@ public:
         }
     }
 
+    void do_error_test(const std::string &expr, bool should_fail)
+    {
+        std::istringstream stream(expr);
+        if(should_fail)
+            CPPUNIT_ASSERT_THROW(Template a(stream), TemplateError);
+        else
+            CPPUNIT_ASSERT_NO_THROW(Template a(stream));
+    }
+
+    void test_errors()
+    {
+        do_error_test("This{", true);
+        do_error_test("This{{", true);
+        do_error_test("This{ {is}}", true);
+        do_error_test("This{{is} }", true);
+        do_error_test("This{{is}}", false);
+        do_error_test("This{{is}", true);
+        do_error_test("This{{is", true);
+    }
+
+    void test_missing_var()
+    {
+        try {
+            typedef std::pair<std::string, std::string> Item;
+
+            std::istringstream stream("Ceci {{is}} un {{test}}");
+            Template tpl(stream);
+            std::ostringstream oss;
+            tpl.render(
+                    oss,
+                    std::unordered_map<std::string, std::string>{
+                        Item("is", "est"),
+                        Item("test", "essai")
+            });
+            CPPUNIT_ASSERT_THROW(
+                tpl.render(
+                        oss,
+                        std::unordered_map<std::string, std::string>{
+                            Item("is", "est")
+                }),
+                TemplateError);
+        }
+        catch(TemplateError &e)
+        {
+            CPPUNIT_FAIL((std::string("Got exception: ") + e.what()).c_str());
+        }
+    }
+
     CPPUNIT_TEST_SUITE(Template_test);
     CPPUNIT_TEST(test_compile);
     CPPUNIT_TEST(test_render);
+    CPPUNIT_TEST(test_errors);
+    CPPUNIT_TEST(test_missing_var);
     CPPUNIT_TEST_SUITE_END();
 
 };
