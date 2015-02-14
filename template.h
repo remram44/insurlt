@@ -1,6 +1,7 @@
 #ifndef TEMPLATE_H
 #define TEMPLATE_H
 
+#include <initializer_list>
 #include <stdexcept>
 #include <type_traits>
 #include <utility> // std::pair
@@ -88,6 +89,7 @@ public:
         render(out, wrapper);
     }
     void render(std::ostream &out, VariableProvider &vars);
+    void render(std::ostream &out, std::initializer_list<const char*> vars);
 
 };
 

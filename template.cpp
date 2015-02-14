@@ -1,6 +1,7 @@
 #include <cassert>
 #include <fstream>
 #include <sstream>
+#include <unordered_map>
 
 #include "template.h"
 
@@ -138,4 +139,18 @@ void Template::render(std::ostream &out, VariableProvider &vars)
             break;
         }
     }
+}
+
+void Template::render(std::ostream &out,
+                      std::initializer_list<const char*> vars)
+{
+    std::unordered_map<std::string, std::string> map;
+    assert(vars.size() % 2 == 0);
+    auto iter = vars.begin();
+    while(iter != vars.end())
+    {
+        const char *key = *iter++;
+        map[key] = *iter++;
+    }
+    render(out, map);
 }

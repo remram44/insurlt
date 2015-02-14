@@ -46,17 +46,17 @@ public:
                         Item("end", "is"),
                         Item("verb", "is"),
                         Item("what", "a house")
-            });
+                    });
             CPPUNIT_ASSERT(oss.str() == "This is: a house!");
 
             oss.str("");
             tpl.render(
                     oss,
-                    std::unordered_map<std::string, std::string>{
-                        Item("end", "ese"),
-                        Item("verb", "are"),
-                        Item("what", "trees")
-            });
+                    {
+                        "end", "ese",
+                        "verb", "are",
+                        "what", "trees"
+                    });
             CPPUNIT_ASSERT(oss.str() == "These are: trees!");
         }
         catch(TemplateError &e)
@@ -98,13 +98,13 @@ public:
                     std::unordered_map<std::string, std::string>{
                         Item("is", "est"),
                         Item("test", "essai")
-            });
+                    });
             CPPUNIT_ASSERT_THROW(
                 tpl.render(
                         oss,
                         std::unordered_map<std::string, std::string>{
                             Item("is", "est")
-                }),
+                        }),
                 TemplateError);
         }
         catch(TemplateError &e)
