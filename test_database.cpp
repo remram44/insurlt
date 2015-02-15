@@ -40,7 +40,7 @@ public:
                     db.resolveURL("http://bbb.clique-salope.ovh/", false) ==
                     "");
             db.storeURL("http://aaa.clique-salope.ovh/",
-                        "http://aaa.net/");
+                        "http://aaa.net/", "10.0.0.1");
             CPPUNIT_ASSERT(
                     db.resolveURL("http://aaa.clique-salope.ovh/", false) ==
                     "http://aaa.net/");

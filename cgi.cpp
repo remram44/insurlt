@@ -229,7 +229,7 @@ int main()
         std::string content = get_req(&request, req_in, req_err);
 
         // Gets method and path from environment
-        std::string method, uri, host;
+        std::string method, uri, host, remote_addr;
         {
             const char *const *envp = request.envp;
             for(; *envp; ++envp)
@@ -240,6 +240,8 @@ int main()
                     method = (*envp) + 15;
                 else if(startswith(*envp, "HTTP_HOST="))
                     host = (*envp) + 10;
+                else if(startswith(*envp, "REMOTE_ADDR="))
+                    remote_addr = (*envp) + 12;
             }
         }
 
@@ -272,7 +274,7 @@ int main()
                 {
                     Key new_key = db.nextState();
                     std::string our_url = insults.generate(new_key);
-                    db.storeURL(our_url, their_url);
+                    db.storeURL(our_url, their_url, remote_addr);
 
                     req_out << "Status: 303 See Other\r\n"
                                "Server: insurlt\r\n"

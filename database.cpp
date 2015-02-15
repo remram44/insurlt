@@ -61,6 +61,8 @@ Database::Database(const char *filepath, Generator &generator)
             "    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
             "    our_url TEXT NOT NULL,"
             "    target_url TEXT NOT NULL,"
+            "    author_ip TEXT NULL,"
+            "    author_date TEXT NOT NULL,"
             "    views INTEGER NOT NULL"
             "    );",
             "CREATE INDEX urls_our_url_idx ON urls(our_url);",
@@ -80,8 +82,9 @@ Database::Database(const char *filepath, Generator &generator)
             -1, &m_stmtSetState, NULL));
     check(sqlite3_prepare_v2(
             m_DB,
-            "INSERT INTO urls(our_url, target_url, views) "
-            "VALUES(?, ?, 0);",
+            "INSERT INTO urls(our_url, target_url, "
+                             "author_ip, author_date, views) "
+            "VALUES(?, ?, ?, datetime(), 0);",
             -1, &m_stmtInsertURL, NULL));
     check(sqlite3_prepare_v2(
             m_DB,
@@ -129,13 +132,17 @@ Database::~Database()
 }
 
 void Database::storeURL(const std::string &our_url,
-                        const std::string &their_url) throw(DatabaseError)
+                        const std::string &their_url,
+                        const std::string &their_address) throw(DatabaseError)
 {
     check(sqlite3_bind_text(m_stmtInsertURL, 1,
                             our_url.c_str(), our_url.size(),
                             SQLITE_TRANSIENT));
     check(sqlite3_bind_text(m_stmtInsertURL, 2,
                             their_url.c_str(), their_url.size(),
+                            SQLITE_TRANSIENT));
+    check(sqlite3_bind_text(m_stmtInsertURL, 3,
+                            their_address.c_str(), their_address.size(),
                             SQLITE_TRANSIENT));
 
     if(sqlite3_step(m_stmtInsertURL) != SQLITE_DONE)

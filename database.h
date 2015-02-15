@@ -48,7 +48,8 @@ public:
     ~Database();
 
     void storeURL(const std::string &our_url,
-                  const std::string &their_url) throw(DatabaseError);
+                  const std::string &their_url,
+                  const std::string &their_address) throw(DatabaseError);
     std::string resolveURL(const std::string &our_url,
                            bool increment_views) throw(DatabaseError);
 
