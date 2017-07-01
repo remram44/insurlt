@@ -24,4 +24,5 @@ need to update the source to match your domain name and favorite insults.
 
 # Check it out
 
-http://clique-salope.ovh/
+http://clique-salope.ovh/ (original French version)
+http://click-bitch.ovh/ (English translation)
