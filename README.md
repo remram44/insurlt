@@ -1,6 +1,6 @@
 # insurlt: An offensive URL-lengthener service
 
-[![Build Status](https://travis-ci.org/remram44/insurlt.png?branch=master)](https://travis-ci.org/remram44/insurlt) [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/remram44)
+[![Build Status](https://github.com/remram44/insurlt/workflows/Test/badge.svg)](https://github.com/remram44/insurlt/actions) [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/remram44)
 
 # Introduction
 
